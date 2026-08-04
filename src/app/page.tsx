@@ -40,7 +40,7 @@ export default function Home() {
           </Show>
         </div>
 
-        <div className="grid w-full gap-4 sm:grid-cols-2">
+        <div className="grid w-full gap-4 sm:grid-cols-3">
           <div className="rounded-2xl border border-black/[.08] p-6 text-left dark:border-white/[.145]">
             <h2 className="text-lg font-medium text-zinc-950 dark:text-zinc-50">
               Free
@@ -51,7 +51,15 @@ export default function Home() {
           </div>
           <div className="rounded-2xl border border-black/[.08] p-6 text-left dark:border-white/[.145]">
             <h2 className="text-lg font-medium text-zinc-950 dark:text-zinc-50">
-              Premium — $5/mo or $50/yr
+              Basic — $4.99/mo or $49.99/yr
+            </h2>
+            <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
+              Unlimited habits.
+            </p>
+          </div>
+          <div className="rounded-2xl border border-black/[.08] p-6 text-left dark:border-white/[.145]">
+            <h2 className="text-lg font-medium text-zinc-950 dark:text-zinc-50">
+              Premium — $9.99/mo or $99.99/yr
             </h2>
             <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
               Unlimited habits and daily journaling.

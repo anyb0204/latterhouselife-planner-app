@@ -1,4 +1,5 @@
 import Stripe from "stripe";
+import type { PlanTier } from "./premium";
 
 let cachedStripe: Stripe | null = null;
 
@@ -17,9 +18,24 @@ export function getStripe(): Stripe {
   return cachedStripe;
 }
 
-export const STRIPE_PRICE_IDS = {
-  monthly: process.env.STRIPE_PRICE_ID_MONTHLY ?? "",
-  annual: process.env.STRIPE_PRICE_ID_ANNUAL ?? "",
-} as const;
+export type BillingInterval = "monthly" | "annual";
 
-export type BillingInterval = keyof typeof STRIPE_PRICE_IDS;
+export const STRIPE_PRICE_IDS: Record<PlanTier, Record<BillingInterval, string>> = {
+  basic: {
+    monthly: process.env.STRIPE_PRICE_ID_BASIC_MONTHLY ?? "",
+    annual: process.env.STRIPE_PRICE_ID_BASIC_ANNUAL ?? "",
+  },
+  premium: {
+    monthly: process.env.STRIPE_PRICE_ID_PREMIUM_MONTHLY ?? "",
+    annual: process.env.STRIPE_PRICE_ID_PREMIUM_ANNUAL ?? "",
+  },
+};
+
+export function planForPriceId(priceId: string | null | undefined): PlanTier | undefined {
+  if (!priceId) return undefined;
+  return (Object.keys(STRIPE_PRICE_IDS) as PlanTier[]).find(
+    (plan) =>
+      STRIPE_PRICE_IDS[plan].monthly === priceId ||
+      STRIPE_PRICE_IDS[plan].annual === priceId,
+  );
+}

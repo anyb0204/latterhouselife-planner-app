@@ -1,26 +1,30 @@
 import { NextRequest, NextResponse } from "next/server";
 import { clerkClient } from "@clerk/nextjs/server";
 import type Stripe from "stripe";
-import { getStripe } from "@/lib/stripe";
+import { getStripe, planForPriceId } from "@/lib/stripe";
 
 function subscriptionIdFromInvoice(invoice: Stripe.Invoice): string | undefined {
   const value = invoice.parent?.subscription_details?.subscription;
   return typeof value === "string" ? value : value?.id;
 }
 
-async function setPremiumStatus(
-  clerkUserId: string,
-  premium: boolean,
-  stripeStatus: string,
-  stripeCustomerId?: string,
-  stripeSubscriptionId?: string,
-) {
+const ACTIVE_STATUSES = new Set(["active", "trialing"]);
+
+async function syncSubscription(subscription: Stripe.Subscription) {
+  const clerkUserId = subscription.metadata?.clerkUserId;
+  if (!clerkUserId) return;
+
+  const active = ACTIVE_STATUSES.has(subscription.status);
+  const priceId = subscription.items.data[0]?.price.id;
+  const plan = active ? (planForPriceId(priceId) ?? null) : null;
+
   const client = await clerkClient();
   await client.users.updateUserMetadata(clerkUserId, {
-    publicMetadata: { premium, stripeStatus },
-    ...(stripeCustomerId || stripeSubscriptionId
-      ? { privateMetadata: { stripeCustomerId, stripeSubscriptionId } }
-      : {}),
+    publicMetadata: { plan, stripeStatus: subscription.status },
+    privateMetadata: {
+      stripeCustomerId: subscription.customer as string,
+      stripeSubscriptionId: subscription.id,
+    },
   });
 }
 
@@ -47,35 +51,10 @@ export async function POST(req: NextRequest) {
   }
 
   switch (event.type) {
-    case "checkout.session.completed": {
-      const session = event.data.object as Stripe.Checkout.Session;
-      const clerkUserId = session.client_reference_id;
-      if (clerkUserId && session.mode === "subscription") {
-        await setPremiumStatus(
-          clerkUserId,
-          true,
-          "active",
-          session.customer as string | undefined,
-          session.subscription as string | undefined,
-        );
-      }
-      break;
-    }
-
+    case "customer.subscription.created":
     case "customer.subscription.updated":
     case "customer.subscription.deleted": {
-      const subscription = event.data.object as Stripe.Subscription;
-      const clerkUserId = subscription.metadata?.clerkUserId;
-      if (clerkUserId) {
-        const premium = ["active", "trialing"].includes(subscription.status);
-        await setPremiumStatus(
-          clerkUserId,
-          premium,
-          subscription.status,
-          subscription.customer as string,
-          subscription.id,
-        );
-      }
+      await syncSubscription(event.data.object as Stripe.Subscription);
       break;
     }
 
@@ -84,11 +63,7 @@ export async function POST(req: NextRequest) {
       const subscriptionId = subscriptionIdFromInvoice(invoice);
       if (subscriptionId) {
         const subscription = await getStripe().subscriptions.retrieve(subscriptionId);
-        const clerkUserId = subscription.metadata?.clerkUserId;
-        if (clerkUserId) {
-          const premium = ["active", "trialing"].includes(subscription.status);
-          await setPremiumStatus(clerkUserId, premium, subscription.status);
-        }
+        await syncSubscription(subscription);
       }
       break;
     }

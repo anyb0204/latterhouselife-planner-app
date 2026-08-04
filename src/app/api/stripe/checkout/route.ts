@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import { getStripe, STRIPE_PRICE_IDS, type BillingInterval } from "@/lib/stripe";
-import type { PlannerPrivateMetadata } from "@/lib/premium";
+import type { PlanTier, PlannerPrivateMetadata } from "@/lib/premium";
 
 export async function POST(req: NextRequest) {
   const { userId } = await auth();
@@ -10,11 +10,12 @@ export async function POST(req: NextRequest) {
   }
 
   const body = await req.json().catch(() => ({}));
+  const plan = body.plan as PlanTier;
   const interval = body.interval as BillingInterval;
-  const priceId = STRIPE_PRICE_IDS[interval];
+  const priceId = STRIPE_PRICE_IDS[plan]?.[interval];
   if (!priceId) {
     return NextResponse.json(
-      { error: "interval must be 'monthly' or 'annual'" },
+      { error: "plan must be 'basic' or 'premium', interval must be 'monthly' or 'annual'" },
       { status: 400 },
     );
   }

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { UserButton } from "@clerk/nextjs";
+import type { PlanTier } from "@/lib/premium";
 
 type Task = { id: string; text: string; done: boolean };
 type Habit = { id: string; name: string };
@@ -10,6 +11,11 @@ const FREE_HABIT_LIMIT = 3;
 const TASKS_KEY = "lhl-planner-tasks";
 const HABITS_KEY = "lhl-planner-habits";
 const JOURNAL_KEY = "lhl-planner-journal";
+
+const PLAN_LABEL: Record<PlanTier, string> = {
+  basic: "Basic plan",
+  premium: "Premium plan",
+};
 
 function loadJSON<T>(key: string, fallback: T): T {
   if (typeof window === "undefined") return fallback;
@@ -23,10 +29,10 @@ function loadJSON<T>(key: string, fallback: T): T {
 
 export function DashboardClient({
   firstName,
-  premium,
+  plan,
 }: {
   firstName: string;
-  premium: boolean;
+  plan: PlanTier | null;
 }) {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [habits, setHabits] = useState<Habit[]>([]);
@@ -57,6 +63,9 @@ export function DashboardClient({
     window.localStorage.setItem(JOURNAL_KEY, JSON.stringify(journal));
   }, [journal]);
 
+  const unlimitedHabits = plan !== null;
+  const hasJournal = plan === "premium";
+
   function addTask() {
     if (!taskInput.trim()) return;
     setTasks((prev) => [
@@ -78,7 +87,7 @@ export function DashboardClient({
 
   function addHabit() {
     if (!habitInput.trim()) return;
-    if (!premium && habits.length >= FREE_HABIT_LIMIT) return;
+    if (!unlimitedHabits && habits.length >= FREE_HABIT_LIMIT) return;
     setHabits((prev) => [...prev, { id: crypto.randomUUID(), name: habitInput.trim() }]);
     setHabitInput("");
   }
@@ -87,14 +96,14 @@ export function DashboardClient({
     setHabits((prev) => prev.filter((h) => h.id !== id));
   }
 
-  async function startCheckout(interval: "monthly" | "annual") {
+  async function startCheckout(checkoutPlan: PlanTier, interval: "monthly" | "annual") {
     setLoading(true);
     setError(null);
     try {
       const res = await fetch("/api/stripe/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ interval }),
+        body: JSON.stringify({ plan: checkoutPlan, interval }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error ?? "Could not start checkout");
@@ -119,7 +128,7 @@ export function DashboardClient({
     }
   }
 
-  const habitLimitReached = !premium && habits.length >= FREE_HABIT_LIMIT;
+  const habitLimitReached = !unlimitedHabits && habits.length >= FREE_HABIT_LIMIT;
 
   return (
     <div className="flex flex-1 flex-col bg-zinc-50 font-sans dark:bg-black">
@@ -129,11 +138,11 @@ export function DashboardClient({
             Welcome, {firstName}
           </h1>
           <p className="text-sm text-zinc-600 dark:text-zinc-400">
-            {premium ? "Premium plan" : "Free plan"}
+            {plan ? PLAN_LABEL[plan] : "Free plan"}
           </p>
         </div>
         <div className="flex items-center gap-3">
-          {premium ? (
+          {plan ? (
             <button
               onClick={openBillingPortal}
               disabled={loading}
@@ -153,29 +162,58 @@ export function DashboardClient({
           </p>
         ) : null}
 
-        {!premium ? (
+        {plan !== "premium" ? (
           <section className="rounded-2xl border border-black/[.08] bg-white p-6 dark:border-white/[.145] dark:bg-zinc-950">
             <h2 className="text-lg font-medium text-zinc-950 dark:text-zinc-50">
-              Upgrade to Premium
+              {plan === "basic" ? "Upgrade to Premium" : "Upgrade your plan"}
             </h2>
-            <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
-              Unlock unlimited habits and daily journaling.
-            </p>
-            <div className="mt-4 flex gap-3">
-              <button
-                onClick={() => startCheckout("monthly")}
-                disabled={loading}
-                className="rounded-full bg-foreground px-5 py-2.5 text-sm font-medium text-background transition-colors hover:bg-[#383838] disabled:opacity-50 dark:hover:bg-[#ccc]"
-              >
-                $5/month
-              </button>
-              <button
-                onClick={() => startCheckout("annual")}
-                disabled={loading}
-                className="rounded-full border border-black/[.08] px-5 py-2.5 text-sm font-medium transition-colors hover:bg-black/[.04] disabled:opacity-50 dark:border-white/[.145] dark:hover:bg-[#1a1a1a]"
-              >
-                $50/year
-              </button>
+            <div className="mt-4 grid gap-4 sm:grid-cols-2">
+              {plan === null ? (
+                <div className="rounded-xl border border-black/[.08] p-4 dark:border-white/[.145]">
+                  <h3 className="font-medium text-zinc-950 dark:text-zinc-50">Basic</h3>
+                  <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
+                    Unlimited habits.
+                  </p>
+                  <div className="mt-3 flex gap-2">
+                    <button
+                      onClick={() => startCheckout("basic", "monthly")}
+                      disabled={loading}
+                      className="rounded-full bg-foreground px-4 py-2 text-sm font-medium text-background transition-colors hover:bg-[#383838] disabled:opacity-50 dark:hover:bg-[#ccc]"
+                    >
+                      $4.99/mo
+                    </button>
+                    <button
+                      onClick={() => startCheckout("basic", "annual")}
+                      disabled={loading}
+                      className="rounded-full border border-black/[.08] px-4 py-2 text-sm font-medium transition-colors hover:bg-black/[.04] disabled:opacity-50 dark:border-white/[.145] dark:hover:bg-[#1a1a1a]"
+                    >
+                      $49.99/yr
+                    </button>
+                  </div>
+                </div>
+              ) : null}
+              <div className="rounded-xl border border-black/[.08] p-4 dark:border-white/[.145]">
+                <h3 className="font-medium text-zinc-950 dark:text-zinc-50">Premium</h3>
+                <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
+                  Unlimited habits + journaling.
+                </p>
+                <div className="mt-3 flex gap-2">
+                  <button
+                    onClick={() => startCheckout("premium", "monthly")}
+                    disabled={loading}
+                    className="rounded-full bg-foreground px-4 py-2 text-sm font-medium text-background transition-colors hover:bg-[#383838] disabled:opacity-50 dark:hover:bg-[#ccc]"
+                  >
+                    $9.99/mo
+                  </button>
+                  <button
+                    onClick={() => startCheckout("premium", "annual")}
+                    disabled={loading}
+                    className="rounded-full border border-black/[.08] px-4 py-2 text-sm font-medium transition-colors hover:bg-black/[.04] disabled:opacity-50 dark:border-white/[.145] dark:hover:bg-[#1a1a1a]"
+                  >
+                    $99.99/yr
+                  </button>
+                </div>
+              </div>
             </div>
           </section>
         ) : null}
@@ -235,8 +273,8 @@ export function DashboardClient({
             Habits
           </h2>
           <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
-            {premium
-              ? "Unlimited habits with Premium."
+            {unlimitedHabits
+              ? "Unlimited habits."
               : `Free plan: up to ${FREE_HABIT_LIMIT} habits.`}
           </p>
           <div className="mt-4 flex gap-2">
@@ -285,7 +323,7 @@ export function DashboardClient({
           <h2 className="text-lg font-medium text-zinc-950 dark:text-zinc-50">
             Journal
           </h2>
-          {premium ? (
+          {hasJournal ? (
             <textarea
               value={journal}
               onChange={(e) => setJournal(e.target.value)}
@@ -297,7 +335,7 @@ export function DashboardClient({
             <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
               Journaling is a Premium feature.{" "}
               <button
-                onClick={() => startCheckout("monthly")}
+                onClick={() => startCheckout("premium", "monthly")}
                 className="font-medium text-zinc-950 underline dark:text-zinc-50"
               >
                 Upgrade to unlock it
