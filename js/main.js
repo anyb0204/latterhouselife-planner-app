@@ -72,6 +72,7 @@
   };
 
   const welcome = document.getElementById('welcome');
+  const welcomeVideo = document.getElementById('welcomeVideo');
   const carousel = document.getElementById('carousel');
   const enterBtn = document.getElementById('enterBtn');
   const stage = document.getElementById('stage');
@@ -88,6 +89,22 @@
 
   let carouselStarted = false;
   let lastFocused = null;
+
+  /* ---------------------------------------------------------
+     Hero video (plays immediately, before any click)
+  --------------------------------------------------------- */
+  (function loadHeroVideo() {
+    const src = welcomeVideo.getAttribute('data-src');
+    if (!src) return;
+
+    welcomeVideo.addEventListener('loadeddata', () => welcomeVideo.classList.add('is-ready'), { once: true });
+    welcomeVideo.addEventListener('error', () => welcomeVideo.classList.remove('is-ready'));
+
+    welcomeVideo.src = src;
+    welcomeVideo.play().catch(() => {
+      /* Autoplay may be blocked until the user interacts; safe to ignore. */
+    });
+  })();
 
   /* ---------------------------------------------------------
      Welcome -> Carousel
@@ -108,6 +125,7 @@
 
     window.setTimeout(() => {
       welcome.hidden = true;
+      welcomeVideo.pause();
     }, 950);
   }
 

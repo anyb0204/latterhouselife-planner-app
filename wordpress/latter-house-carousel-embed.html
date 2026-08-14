@@ -7,10 +7,11 @@
      Set that page as your site's static front page under
      Settings → Reading → "Your homepage displays" → A static page.
   2. Paste this ENTIRE file into the Custom HTML block, then Preview/Publish.
-  3. Upload the 5 room videos to Media Library (Add New → upload the .mp4
-     files), open each one, copy its "File URL", and paste it into the
-     VIDEOS object just below (replace the placeholder paths). Using the
-     Media Library URL avoids relying on any theme file paths.
+  3. Upload the hero video + 5 room videos to Media Library (Add New →
+     upload the .mp4 files), open each one, copy its "File URL", and
+     paste it into the VIDEOS object just below (replace the placeholder
+     paths). Using the Media Library URL avoids relying on any theme file
+     paths.
   4. Requires an Administrator (or an account with the "unfiltered_html"
      capability) to save <style>/<script> tags without them being
      stripped — that's true of most single-site WP installs by default.
@@ -18,21 +19,23 @@
      for your role, or use a "Code Snippets"-style plugin instead.
   5. All classes/ids are prefixed "lhl-" and scoped under #lhl-root to
      avoid clashing with your theme's CSS.
+  6. The welcome screen fills exactly one viewport height (100svh). If
+     your theme prints a header/nav above the page content, that pushes
+     this section down and the "Latter House Life" mark (bottom-right)
+     won't be visible without scrolling first. For a true full-screen
+     landing page, use a "blank"/"canvas" page template if your theme
+     offers one (removes the header/footer for that page).
 -->
 <div id="lhl-root">
 
   <!-- ===================== WELCOME SCREEN ===================== -->
   <section id="lhl-welcome" class="lhl-welcome">
-    <div class="lhl-welcome__bg" aria-hidden="true"></div>
-    <div class="lhl-welcome__content">
-      <p class="lhl-kicker">LATTER HOUSE LIFE</p>
-      <h1 class="lhl-welcome__headline">Start Here</h1>
-      <p class="lhl-welcome__sub">A quiet place to gather what you need &mdash; Scripture, community, tools, and wisdom for the road ahead.</p>
-      <button type="button" id="lhl-enterBtn" class="lhl-btn-enter">
-        <span>Enter</span>
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </button>
-    </div>
+    <video id="lhl-welcomeVideo" class="lhl-welcome__bgvideo" muted loop playsinline autoplay preload="auto"></video>
+    <span class="lhl-welcome__glow" aria-hidden="true"></span>
+    <span class="lhl-welcome__scrim" aria-hidden="true"></span>
+
+    <button type="button" id="lhl-enterBtn" class="lhl-btn-start">Start Here</button>
+    <span class="lhl-welcome__brand">Latter House Life</span>
   </section>
 
   <!-- ===================== CAROUSEL SCREEN ===================== -->
@@ -179,12 +182,9 @@
 
 .lhl-welcome {
   position: relative;
-  min-height: 100svh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 32px 24px;
+  height: 100svh;
   overflow: hidden;
+  background: var(--lhl-bg);
   transition: opacity 900ms var(--lhl-ease), visibility 900ms var(--lhl-ease);
 }
 
@@ -194,95 +194,77 @@
   pointer-events: none;
 }
 
-.lhl-welcome__bg {
+.lhl-welcome__bgvideo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 1200ms var(--lhl-ease);
+}
+
+.lhl-welcome__bgvideo.lhl-is-ready { opacity: 1; }
+
+.lhl-welcome__glow {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, #10201e, var(--lhl-bg) 75%);
+}
+
+.lhl-welcome__scrim {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 60% 45% at 50% 0%, rgba(201, 168, 76, 0.14), transparent 70%),
-    radial-gradient(ellipse 70% 50% at 50% 100%, rgba(122, 158, 126, 0.08), transparent 70%),
-    var(--lhl-bg);
+    linear-gradient(180deg, rgba(10,10,15,0.55) 0%, rgba(10,10,15,0.05) 22%, rgba(10,10,15,0.05) 70%, rgba(10,10,15,0.65) 100%);
 }
 
-.lhl-welcome__bg::after {
-  content: "";
+.lhl-welcome__brand {
   position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(rgba(201, 168, 76, 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(201, 168, 76, 0.05) 1px, transparent 1px);
-  background-size: 64px 64px;
-  mask-image: radial-gradient(ellipse 60% 60% at 50% 40%, black, transparent 75%);
-}
-
-.lhl-welcome__content {
-  position: relative;
-  z-index: 1;
-  max-width: 620px;
-  text-align: center;
+  right: 28px;
+  bottom: 26px;
+  z-index: 2;
+  font-family: var(--lhl-font-display);
+  font-size: 18px;
+  letter-spacing: 0.05em;
+  color: var(--lhl-cream);
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.55);
   animation: lhl-welcomeIn 1.1s var(--lhl-ease) both;
 }
 
-@keyframes lhl-welcomeIn {
-  from { opacity: 0; transform: translateY(18px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-.lhl-kicker {
-  font-family: var(--lhl-font-body);
-  font-size: 12px;
-  letter-spacing: 0.32em;
-  text-transform: uppercase;
-  color: var(--lhl-gold);
-  margin: 0 0 22px;
-  font-weight: 500;
-}
-
-.lhl-welcome__headline {
-  font-family: var(--lhl-font-display);
-  font-weight: 500;
-  font-size: clamp(2.6rem, 7vw, 4.6rem);
-  line-height: 1.08;
-  margin: 0 0 24px;
-  color: var(--lhl-cream);
-}
-
-.lhl-welcome__sub {
-  font-size: 15px;
-  line-height: 1.7;
-  color: var(--lhl-cream-dim);
-  max-width: 440px;
-  margin: 0 auto 42px;
-  font-weight: 300;
-}
-
-.lhl-btn-enter {
+.lhl-btn-start {
+  position: absolute;
+  left: 28px;
+  top: 26px;
+  z-index: 2;
   appearance: none;
   border: 1px solid var(--lhl-gold-soft);
-  background: linear-gradient(180deg, rgba(201, 168, 76, 0.14), rgba(201, 168, 76, 0.04));
+  background: rgba(10, 10, 15, 0.32);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   color: var(--lhl-gold);
   font-family: var(--lhl-font-display);
-  font-size: 19px;
-  letter-spacing: 0.06em;
-  padding: 14px 34px;
+  font-size: 16px;
+  letter-spacing: 0.05em;
+  padding: 10px 22px;
   border-radius: 999px;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
   cursor: pointer;
   transition: transform 420ms var(--lhl-ease), background 420ms var(--lhl-ease), border-color 420ms var(--lhl-ease), box-shadow 420ms var(--lhl-ease);
-  box-shadow: 0 0 0 0 rgba(201, 168, 76, 0);
+  animation: lhl-welcomeIn 1.1s var(--lhl-ease) both;
 }
 
-.lhl-btn-enter:hover,
-.lhl-btn-enter:focus-visible {
+.lhl-btn-start:hover,
+.lhl-btn-start:focus-visible {
   border-color: var(--lhl-gold);
-  background: linear-gradient(180deg, rgba(201, 168, 76, 0.24), rgba(201, 168, 76, 0.08));
+  background: rgba(10, 10, 15, 0.55);
   transform: translateY(-2px);
-  box-shadow: 0 12px 30px -12px rgba(201, 168, 76, 0.45);
+  box-shadow: 0 12px 30px -12px rgba(201, 168, 76, 0.5);
 }
 
-.lhl-btn-enter svg { transition: transform 320ms var(--lhl-ease); }
-.lhl-btn-enter:hover svg { transform: translateX(3px); }
+@keyframes lhl-welcomeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
 
 /* =========================================================
    CAROUSEL SCREEN
@@ -687,14 +669,16 @@
 }
 
 @media (max-width: 480px) {
-  .lhl-welcome__sub { font-size: 14px; }
   .lhl-card { width: 82vw; height: 68vw; max-height: 340px; }
   .lhl-carousel__header { padding: 28px 16px 4px; }
+  .lhl-btn-start { left: 18px; top: 18px; font-size: 15px; padding: 9px 18px; }
+  .lhl-welcome__brand { right: 18px; bottom: 18px; font-size: 16px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .lhl-card { animation: none; transition: none; }
-  .lhl-welcome__content { animation: none; }
+  .lhl-welcome__brand,
+  .lhl-btn-start { animation: none; }
 }
 </style>
 
@@ -703,10 +687,11 @@
   'use strict';
 
   /* ---------------------------------------------------------
-     EDIT ME: paste each room's Media Library "File URL" here
-     after uploading the .mp4 files (Media → Add New).
+     EDIT ME: paste the hero video and each room's Media Library
+     "File URL" here after uploading the .mp4 files (Media → Add New).
   --------------------------------------------------------- */
   const VIDEOS = {
+    hero:      'https://YOUR-SITE.com/wp-content/uploads/R_wow_exotic_cliff_formation_beach.mp4',
     resources: 'https://YOUR-SITE.com/wp-content/uploads/R_crashing_waves.mp4',
     community: 'https://YOUR-SITE.com/wp-content/uploads/C_group_of_old_men_talking.mp4',
     scripture: 'https://YOUR-SITE.com/wp-content/uploads/S_hands_on_bible.mp4',
@@ -749,6 +734,7 @@
 
   const root = document.getElementById('lhl-root');
   const welcome = root.querySelector('#lhl-welcome');
+  const welcomeVideo = root.querySelector('#lhl-welcomeVideo');
   const carousel = root.querySelector('#lhl-carousel');
   const enterBtn = root.querySelector('#lhl-enterBtn');
   const stage = root.querySelector('#lhl-stage');
@@ -766,6 +752,16 @@
   let carouselStarted = false;
   let lastFocused = null;
 
+  (function loadHeroVideo() {
+    if (!VIDEOS.hero) return;
+
+    welcomeVideo.addEventListener('loadeddata', () => welcomeVideo.classList.add('lhl-is-ready'), { once: true });
+    welcomeVideo.addEventListener('error', () => welcomeVideo.classList.remove('lhl-is-ready'));
+
+    welcomeVideo.src = VIDEOS.hero;
+    welcomeVideo.play().catch(() => {});
+  })();
+
   function enterCarousel() {
     welcome.classList.add('lhl-is-leaving');
     carousel.hidden = false;
@@ -782,6 +778,7 @@
 
     window.setTimeout(() => {
       welcome.hidden = true;
+      welcomeVideo.pause();
     }, 950);
   }
 

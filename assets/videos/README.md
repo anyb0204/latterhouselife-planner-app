@@ -1,22 +1,22 @@
 # Video assets
 
-Drop the room background videos into this folder using these exact filenames
-(referenced directly by `index.html` / `js/main.js`). Until a file is present,
-its card falls back to a themed gradient instead of breaking.
+Drop the videos into this folder using these exact filenames (referenced
+directly by `index.html` / `js/main.js`). Until a file is present, its
+card/screen falls back to a themed gradient instead of breaking.
 
 ## Primary (used by default)
 
+- `R_wow_exotic_cliff_formation_beach.mp4` — welcome/hero screen background
 - `R_crashing_waves.mp4` — Resources
 - `C_group_of_old_men_talking.mp4` — Community
 - `S_hands_on_bible.mp4` — Scripture
 - `T_man_working_with_tools.mp4` — Tools
 - `L_woman_sitting_in_front_of_book_shelf.mp4` — Library
 
-## Backups (swap in via `ROOMS[...].video` in `js/main.js`)
+## Backups (swap in via `#welcomeVideo`'s `data-src` for the hero, or `ROOMS[...].video` in `js/main.js` for a room)
 
 - `R_majestic_waterfall_one_person_way_back.mp4`
 - `R_ocean_view_behind_a_stalk_of_wheat.mp4`
-- `R_wow_exotic_cliff_formation_beach.mp4`
 - `R_tall_grass_blowing.mp4`
 - `C_funny_couple_dancing.mp4`
 - `c_couple_talking.mp4`
