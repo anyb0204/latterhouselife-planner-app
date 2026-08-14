@@ -1,0 +1,872 @@
+<!--
+  LATTER HOUSE LIFE — Homepage Carousel (WordPress Custom HTML embed)
+  =====================================================================
+  HOW TO INSTALL
+  1. In the WP block editor, add a "Custom HTML" block (search for it in
+     the block inserter) on the page you want this to be the homepage.
+     Set that page as your site's static front page under
+     Settings → Reading → "Your homepage displays" → A static page.
+  2. Paste this ENTIRE file into the Custom HTML block, then Preview/Publish.
+  3. Upload the 5 room videos to Media Library (Add New → upload the .mp4
+     files), open each one, copy its "File URL", and paste it into the
+     VIDEOS object just below (replace the placeholder paths). Using the
+     Media Library URL avoids relying on any theme file paths.
+  4. Requires an Administrator (or an account with the "unfiltered_html"
+     capability) to save <style>/<script> tags without them being
+     stripped — that's true of most single-site WP installs by default.
+     If tags get stripped on save, ask your host to enable unfiltered_html
+     for your role, or use a "Code Snippets"-style plugin instead.
+  5. All classes/ids are prefixed "lhl-" and scoped under #lhl-root to
+     avoid clashing with your theme's CSS.
+-->
+<div id="lhl-root">
+
+  <!-- ===================== WELCOME SCREEN ===================== -->
+  <section id="lhl-welcome" class="lhl-welcome">
+    <div class="lhl-welcome__bg" aria-hidden="true"></div>
+    <div class="lhl-welcome__content">
+      <p class="lhl-kicker">LATTER HOUSE LIFE</p>
+      <h1 class="lhl-welcome__headline">Come on in.<br>Let&rsquo;s get you ready.</h1>
+      <p class="lhl-welcome__sub">A quiet place to gather what you need &mdash; Scripture, community, tools, and wisdom for the road ahead.</p>
+      <button type="button" id="lhl-enterBtn" class="lhl-btn-enter">
+        <span>Enter</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </section>
+
+  <!-- ===================== CAROUSEL SCREEN ===================== -->
+  <main id="lhl-carousel" class="lhl-carousel" hidden aria-hidden="true">
+
+    <header class="lhl-carousel__header">
+      <span class="lhl-brand-mark">Latter House Life</span>
+      <p class="lhl-brand-tagline">Choose a room to step into</p>
+    </header>
+
+    <div class="lhl-stage" id="lhl-stage">
+      <div class="lhl-horseshoe" id="lhl-horseshoe">
+
+        <button type="button" class="lhl-card lhl-card--resources" data-room="resources" style="--order:1">
+          <span class="lhl-card__glow" aria-hidden="true"></span>
+          <video class="lhl-card__video" muted loop playsinline preload="none"></video>
+          <span class="lhl-card__scrim" aria-hidden="true"></span>
+          <span class="lhl-card__frame" aria-hidden="true"></span>
+          <span class="lhl-card__content">
+            <span class="lhl-card__eyebrow">Life-giving. Abundant.</span>
+            <span class="lhl-card__title">Resources</span>
+          </span>
+        </button>
+
+        <button type="button" class="lhl-card lhl-card--community" data-room="community" style="--order:2">
+          <span class="lhl-card__glow" aria-hidden="true"></span>
+          <video class="lhl-card__video" muted loop playsinline preload="none"></video>
+          <span class="lhl-card__scrim" aria-hidden="true"></span>
+          <span class="lhl-card__frame" aria-hidden="true"></span>
+          <span class="lhl-card__content">
+            <span class="lhl-card__eyebrow">Real people. Real conversations.</span>
+            <span class="lhl-card__title">Community</span>
+          </span>
+        </button>
+
+        <button type="button" class="lhl-card lhl-card--scripture" data-room="scripture" style="--order:3">
+          <span class="lhl-card__glow" aria-hidden="true"></span>
+          <video class="lhl-card__video" muted loop playsinline preload="none"></video>
+          <span class="lhl-card__scrim" aria-hidden="true"></span>
+          <span class="lhl-card__frame" aria-hidden="true"></span>
+          <span class="lhl-card__content">
+            <span class="lhl-card__eyebrow">Immerse in the Word.</span>
+            <span class="lhl-card__title">Scripture</span>
+          </span>
+        </button>
+
+        <button type="button" class="lhl-card lhl-card--tools" data-room="tools" style="--order:4">
+          <span class="lhl-card__glow" aria-hidden="true"></span>
+          <video class="lhl-card__video" muted loop playsinline preload="none"></video>
+          <span class="lhl-card__scrim" aria-hidden="true"></span>
+          <span class="lhl-card__frame" aria-hidden="true"></span>
+          <span class="lhl-card__content">
+            <span class="lhl-card__eyebrow">Build what God called you to build.</span>
+            <span class="lhl-card__title">Tools</span>
+          </span>
+        </button>
+
+        <button type="button" class="lhl-card lhl-card--library" data-room="library" style="--order:5">
+          <span class="lhl-card__glow" aria-hidden="true"></span>
+          <video class="lhl-card__video" muted loop playsinline preload="none"></video>
+          <span class="lhl-card__scrim" aria-hidden="true"></span>
+          <span class="lhl-card__frame" aria-hidden="true"></span>
+          <span class="lhl-card__content">
+            <span class="lhl-card__eyebrow">Wisdom for the road ahead.</span>
+            <span class="lhl-card__title">Library</span>
+          </span>
+        </button>
+
+      </div>
+      <div class="lhl-stage__floor" aria-hidden="true"></div>
+    </div>
+  </main>
+
+  <!-- ===================== ROOM MODAL ===================== -->
+  <div id="lhl-modal" class="lhl-modal" hidden>
+    <div class="lhl-modal__backdrop" data-lhl-close></div>
+    <div class="lhl-modal__panel" role="dialog" aria-modal="true" aria-labelledby="lhl-modalTitle">
+      <button type="button" class="lhl-modal__close" data-lhl-close aria-label="Close">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>
+      </button>
+      <div class="lhl-modal__media">
+        <video id="lhl-modalVideo" class="lhl-modal__video" muted loop playsinline autoplay></video>
+        <span class="lhl-modal__media-scrim" aria-hidden="true"></span>
+      </div>
+      <div class="lhl-modal__body">
+        <p class="lhl-modal__eyebrow" id="lhl-modalEyebrow"></p>
+        <h2 class="lhl-modal__title" id="lhl-modalTitle"></h2>
+        <p class="lhl-modal__desc" id="lhl-modalDesc"></p>
+        <a href="#" class="lhl-btn-room" id="lhl-modalCta">
+          <span id="lhl-modalCtaLabel">Step in</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* =========================================================
+   Latter House Life — Homepage Carousel (scoped to #lhl-root)
+   ========================================================= */
+
+#lhl-root {
+  --lhl-bg: #0a0a0f;
+  --lhl-bg-raised: #111118;
+  --lhl-gold: #C9A84C;
+  --lhl-gold-soft: rgba(201, 168, 76, 0.45);
+  --lhl-gold-dim: rgba(201, 168, 76, 0.18);
+  --lhl-cream: #F8F5EF;
+  --lhl-cream-dim: rgba(248, 245, 239, 0.68);
+  --lhl-sage: #7A9E7E;
+  --lhl-font-display: 'Cormorant Garamond', Georgia, serif;
+  --lhl-font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --lhl-ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  position: relative;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  background: var(--lhl-bg);
+  color: var(--lhl-cream);
+  font-family: var(--lhl-font-body);
+  overflow-x: hidden;
+  line-height: normal;
+}
+
+#lhl-root *,
+#lhl-root *::before,
+#lhl-root *::after { box-sizing: border-box; }
+
+#lhl-root button { font-family: inherit; }
+#lhl-root a { text-decoration: none; }
+
+#lhl-root [hidden] { display: none !important; }
+
+/* =========================================================
+   WELCOME SCREEN
+   ========================================================= */
+
+.lhl-welcome {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 24px;
+  overflow: hidden;
+  transition: opacity 900ms var(--lhl-ease), visibility 900ms var(--lhl-ease);
+}
+
+.lhl-welcome.lhl-is-leaving {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.lhl-welcome__bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 45% at 50% 0%, rgba(201, 168, 76, 0.14), transparent 70%),
+    radial-gradient(ellipse 70% 50% at 50% 100%, rgba(122, 158, 126, 0.08), transparent 70%),
+    var(--lhl-bg);
+}
+
+.lhl-welcome__bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(201, 168, 76, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(201, 168, 76, 0.05) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(ellipse 60% 60% at 50% 40%, black, transparent 75%);
+}
+
+.lhl-welcome__content {
+  position: relative;
+  z-index: 1;
+  max-width: 620px;
+  text-align: center;
+  animation: lhl-welcomeIn 1.1s var(--lhl-ease) both;
+}
+
+@keyframes lhl-welcomeIn {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.lhl-kicker {
+  font-family: var(--lhl-font-body);
+  font-size: 12px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--lhl-gold);
+  margin: 0 0 22px;
+  font-weight: 500;
+}
+
+.lhl-welcome__headline {
+  font-family: var(--lhl-font-display);
+  font-weight: 500;
+  font-size: clamp(2.6rem, 7vw, 4.6rem);
+  line-height: 1.08;
+  margin: 0 0 24px;
+  color: var(--lhl-cream);
+}
+
+.lhl-welcome__sub {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--lhl-cream-dim);
+  max-width: 440px;
+  margin: 0 auto 42px;
+  font-weight: 300;
+}
+
+.lhl-btn-enter {
+  appearance: none;
+  border: 1px solid var(--lhl-gold-soft);
+  background: linear-gradient(180deg, rgba(201, 168, 76, 0.14), rgba(201, 168, 76, 0.04));
+  color: var(--lhl-gold);
+  font-family: var(--lhl-font-display);
+  font-size: 19px;
+  letter-spacing: 0.06em;
+  padding: 14px 34px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: transform 420ms var(--lhl-ease), background 420ms var(--lhl-ease), border-color 420ms var(--lhl-ease), box-shadow 420ms var(--lhl-ease);
+  box-shadow: 0 0 0 0 rgba(201, 168, 76, 0);
+}
+
+.lhl-btn-enter:hover,
+.lhl-btn-enter:focus-visible {
+  border-color: var(--lhl-gold);
+  background: linear-gradient(180deg, rgba(201, 168, 76, 0.24), rgba(201, 168, 76, 0.08));
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px -12px rgba(201, 168, 76, 0.45);
+}
+
+.lhl-btn-enter svg { transition: transform 320ms var(--lhl-ease); }
+.lhl-btn-enter:hover svg { transform: translateX(3px); }
+
+/* =========================================================
+   CAROUSEL SCREEN
+   ========================================================= */
+
+.lhl-carousel {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  background:
+    radial-gradient(ellipse 90% 60% at 50% 8%, rgba(201, 168, 76, 0.10), transparent 65%),
+    radial-gradient(ellipse 80% 50% at 50% 100%, rgba(122, 158, 126, 0.07), transparent 70%),
+    var(--lhl-bg);
+  opacity: 0;
+  transition: opacity 900ms var(--lhl-ease) 200ms;
+}
+
+.lhl-carousel.lhl-is-visible { opacity: 1; }
+
+.lhl-carousel__header {
+  text-align: center;
+  padding: 40px 20px 8px;
+  position: relative;
+  z-index: 2;
+}
+
+.lhl-brand-mark {
+  font-family: var(--lhl-font-display);
+  font-size: 22px;
+  letter-spacing: 0.04em;
+  color: var(--lhl-gold);
+}
+
+.lhl-brand-tagline {
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--lhl-cream-dim);
+  margin: 8px 0 0;
+  font-weight: 400;
+}
+
+.lhl-stage {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1600px;
+  perspective-origin: 50% 30%;
+  padding: 40px 20px 90px;
+  min-height: 640px;
+}
+
+.lhl-stage__floor {
+  position: absolute;
+  left: 50%;
+  bottom: 40px;
+  width: min(1100px, 92vw);
+  height: 220px;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse 60% 100% at 50% 100%, rgba(201, 168, 76, 0.10), transparent 72%);
+  pointer-events: none;
+}
+
+.lhl-horseshoe {
+  position: relative;
+  width: 1px;
+  height: 1px;
+  transform-style: preserve-3d;
+  transition: transform 200ms var(--lhl-ease);
+}
+
+/* ---- Card base ---- */
+
+.lhl-card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 220px;
+  height: 320px;
+  margin: -160px 0 0 -110px;
+  border: none;
+  border-radius: 18px;
+  padding: 0;
+  cursor: pointer;
+  overflow: hidden;
+  background: var(--lhl-bg-raised);
+  transform: translate3d(var(--x), var(--y), var(--z)) rotateY(var(--ry)) scale(var(--s));
+  transition: transform 650ms var(--lhl-ease), filter 450ms var(--lhl-ease);
+  animation: lhl-cardFloat 7s ease-in-out infinite;
+  animation-delay: calc(var(--order) * -1.1s);
+  will-change: transform;
+}
+
+@keyframes lhl-cardFloat {
+  0%, 100% { margin-top: -160px; }
+  50%      { margin-top: -172px; }
+}
+
+.lhl-card:hover,
+.lhl-card:focus-visible {
+  filter: brightness(1.08);
+  outline: none;
+}
+
+.lhl-card:hover { transform: translate3d(var(--x), calc(var(--y) - 14px), calc(var(--z) + 26px)) rotateY(var(--ry)) scale(calc(var(--s) + 0.035)); }
+
+/* Horseshoe placement: viewer at open end, looking in.
+   Resources = back center (farthest, smallest).
+   Community / Scripture = mid sides.
+   Tools / Library = front corners (closest, biggest). */
+
+.lhl-card--resources { --x: 0px;     --y: -34px; --z: -420px; --ry: 0deg;   --s: 0.66; z-index: 1; }
+.lhl-card--community { --x: -300px;  --y: -8px;  --z: -230px; --ry: 24deg;  --s: 0.85; z-index: 2; }
+.lhl-card--scripture { --x: 300px;   --y: -8px;  --z: -230px; --ry: -24deg; --s: 0.85; z-index: 2; }
+.lhl-card--tools      { --x: -540px; --y: 26px;  --z: 30px;   --ry: 42deg;  --s: 1.16; z-index: 3; }
+.lhl-card--library    { --x: 540px;  --y: 26px;  --z: 30px;   --ry: -42deg; --s: 1.16; z-index: 3; }
+
+.lhl-card__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 700ms var(--lhl-ease);
+}
+
+.lhl-card__video.lhl-is-ready { opacity: 1; }
+
+.lhl-card--resources .lhl-card__glow { background: linear-gradient(160deg, #0e1a1c, #0a0a0f 70%); }
+.lhl-card--community .lhl-card__glow { background: linear-gradient(160deg, #14181a, #0a0a0f 70%); }
+.lhl-card--scripture .lhl-card__glow { background: linear-gradient(160deg, #191510, #0a0a0f 70%); }
+.lhl-card--tools      .lhl-card__glow { background: linear-gradient(160deg, #171310, #0a0a0f 70%); }
+.lhl-card--library    .lhl-card__glow { background: linear-gradient(160deg, #12141a, #0a0a0f 70%); }
+
+.lhl-card__glow {
+  position: absolute;
+  inset: 0;
+}
+
+.lhl-card__scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(10,10,15,0.05) 0%, rgba(10,10,15,0.08) 45%, rgba(10,10,15,0.92) 100%);
+}
+
+.lhl-card__frame {
+  position: absolute;
+  inset: 0;
+  border-radius: 18px;
+  border: 1px solid var(--lhl-gold-soft);
+  box-shadow:
+    inset 0 0 0 1px rgba(248, 245, 239, 0.04),
+    0 18px 40px -18px rgba(0, 0, 0, 0.75);
+  pointer-events: none;
+  transition: border-color 450ms var(--lhl-ease), box-shadow 450ms var(--lhl-ease);
+}
+
+.lhl-card:hover .lhl-card__frame,
+.lhl-card:focus-visible .lhl-card__frame {
+  border-color: var(--lhl-gold);
+  box-shadow:
+    inset 0 0 0 1px rgba(248, 245, 239, 0.06),
+    0 0 0 1px rgba(201, 168, 76, 0.35),
+    0 26px 50px -16px rgba(0, 0, 0, 0.8),
+    0 0 32px -6px rgba(201, 168, 76, 0.35);
+}
+
+.lhl-card__content {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 18px 18px 20px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.lhl-card__eyebrow {
+  font-size: 10.5px;
+  letter-spacing: 0.04em;
+  color: var(--lhl-sage);
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.lhl-card__title {
+  font-family: var(--lhl-font-display);
+  font-size: 27px;
+  color: var(--lhl-cream);
+  letter-spacing: 0.01em;
+}
+
+/* =========================================================
+   MODAL
+   ========================================================= */
+
+.lhl-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.lhl-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(6, 6, 9, 0.82);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  animation: lhl-fadeIn 380ms var(--lhl-ease);
+}
+
+@keyframes lhl-fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.lhl-modal__panel {
+  position: relative;
+  z-index: 1;
+  width: min(880px, 100%);
+  max-height: min(720px, 88vh);
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  background: var(--lhl-bg-raised);
+  border: 1px solid var(--lhl-gold-soft);
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: 0 40px 90px -30px rgba(0, 0, 0, 0.85), 0 0 60px -20px rgba(201, 168, 76, 0.18);
+  animation: lhl-panelIn 420ms var(--lhl-ease);
+}
+
+@keyframes lhl-panelIn {
+  from { opacity: 0; transform: translateY(16px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.lhl-modal__media {
+  position: relative;
+  min-height: 260px;
+  background: #0e0e14;
+}
+
+.lhl-modal__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.lhl-modal__media-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(10,10,15,0) 60%, rgba(17,17,24,0.9) 100%),
+              linear-gradient(0deg, rgba(10,10,15,0.5), transparent 40%);
+}
+
+.lhl-modal__body {
+  padding: 40px 40px 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow-y: auto;
+}
+
+.lhl-modal__eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--lhl-sage);
+  font-weight: 500;
+  margin: 0 0 10px;
+}
+
+.lhl-modal__title {
+  font-family: var(--lhl-font-display);
+  font-size: 40px;
+  color: var(--lhl-gold);
+  margin: 0 0 16px;
+  font-weight: 500;
+}
+
+.lhl-modal__desc {
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--lhl-cream-dim);
+  font-weight: 300;
+  margin: 0 0 30px;
+}
+
+.lhl-btn-room {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--lhl-bg);
+  background: var(--lhl-gold);
+  font-family: var(--lhl-font-body);
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.02em;
+  padding: 13px 24px;
+  border-radius: 999px;
+  transition: transform 320ms var(--lhl-ease), box-shadow 320ms var(--lhl-ease), background 320ms var(--lhl-ease);
+}
+
+.lhl-btn-room:hover {
+  background: #dcbb5b;
+  transform: translateY(-2px);
+  box-shadow: 0 14px 28px -12px rgba(201, 168, 76, 0.55);
+}
+
+.lhl-modal__close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 2;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid rgba(248, 245, 239, 0.18);
+  background: rgba(10, 10, 15, 0.55);
+  color: var(--lhl-cream);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: border-color 280ms var(--lhl-ease), color 280ms var(--lhl-ease), transform 280ms var(--lhl-ease);
+}
+
+.lhl-modal__close:hover {
+  border-color: var(--lhl-gold);
+  color: var(--lhl-gold);
+  transform: rotate(90deg);
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 860px) {
+  .lhl-modal__panel { grid-template-columns: 1fr; max-height: 88vh; }
+  .lhl-modal__media { min-height: 200px; }
+  .lhl-modal__media-scrim { background: linear-gradient(0deg, rgba(17,17,24,1) 2%, transparent 40%); }
+  .lhl-modal__body { padding: 28px 24px 32px; }
+  .lhl-modal__title { font-size: 32px; }
+}
+
+@media (max-width: 780px) {
+  .lhl-stage {
+    perspective: none;
+    padding: 12px 0 48px;
+    min-height: auto;
+    align-items: stretch;
+  }
+
+  .lhl-stage__floor { display: none; }
+
+  .lhl-horseshoe {
+    width: 100%;
+    height: auto;
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    padding: 12px 24px 20px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .lhl-card {
+    position: relative;
+    top: auto;
+    left: auto;
+    margin: 0;
+    flex: 0 0 auto;
+    width: 76vw;
+    max-width: 300px;
+    height: 62vw;
+    max-height: 380px;
+    scroll-snap-align: center;
+    transform: none !important;
+    animation: none;
+    order: var(--order);
+  }
+
+  .lhl-card:hover { transform: none !important; }
+
+  .lhl-card--tools      { order: 1; }
+  .lhl-card--community { order: 2; }
+  .lhl-card--resources { order: 3; }
+  .lhl-card--scripture { order: 4; }
+  .lhl-card--library    { order: 5; }
+
+  .lhl-card__title { font-size: 24px; }
+}
+
+@media (max-width: 480px) {
+  .lhl-welcome__sub { font-size: 14px; }
+  .lhl-card { width: 82vw; height: 68vw; max-height: 340px; }
+  .lhl-carousel__header { padding: 28px 16px 4px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lhl-card { animation: none; transition: none; }
+  .lhl-welcome__content { animation: none; }
+}
+</style>
+
+<script>
+(() => {
+  'use strict';
+
+  /* ---------------------------------------------------------
+     EDIT ME: paste each room's Media Library "File URL" here
+     after uploading the .mp4 files (Media → Add New).
+  --------------------------------------------------------- */
+  const VIDEOS = {
+    resources: 'https://YOUR-SITE.com/wp-content/uploads/R_crashing_waves.mp4',
+    community: 'https://YOUR-SITE.com/wp-content/uploads/C_group_of_old_men_talking.mp4',
+    scripture: 'https://YOUR-SITE.com/wp-content/uploads/S_hands_on_bible.mp4',
+    tools:     'https://YOUR-SITE.com/wp-content/uploads/T_man_working_with_tools.mp4',
+    library:   'https://YOUR-SITE.com/wp-content/uploads/L_woman_sitting_in_front_of_book_shelf.mp4'
+  };
+
+  const ROOMS = {
+    resources: {
+      title: 'Resources',
+      eyebrow: 'Life-giving. Abundant.',
+      description: "Life poured out, not measured in drops. Sermons, teachings, and practical resources that overflow — because you were never meant to run on empty.",
+      cta: 'Explore Resources'
+    },
+    community: {
+      title: 'Community',
+      eyebrow: 'Real people. Real conversations.',
+      description: 'Pull up a chair. This is where real people wrestle with real life — no performing required, just honest conversation and people who’ll walk with you.',
+      cta: 'Join the Community'
+    },
+    scripture: {
+      title: 'Scripture',
+      eyebrow: 'Immerse in the Word.',
+      description: 'Come sit in the Word a while. Slow down, open the pages, and let it read you back — verse by verse, day by day.',
+      cta: 'Open Scripture'
+    },
+    tools: {
+      title: 'Tools',
+      eyebrow: 'Build what God called you to build.',
+      description: 'Whatever God put in your hands, we’ve got what you need to build it. Practical tools for the calling you’re carrying.',
+      cta: 'Get the Tools'
+    },
+    library: {
+      title: 'Library',
+      eyebrow: 'Wisdom for the road ahead.',
+      description: 'Wisdom doesn’t rush. Settle in among the shelves and gather what you’ll need for the road still ahead.',
+      cta: 'Visit the Library'
+    }
+  };
+
+  const root = document.getElementById('lhl-root');
+  const welcome = root.querySelector('#lhl-welcome');
+  const carousel = root.querySelector('#lhl-carousel');
+  const enterBtn = root.querySelector('#lhl-enterBtn');
+  const stage = root.querySelector('#lhl-stage');
+  const horseshoe = root.querySelector('#lhl-horseshoe');
+  const cards = Array.from(root.querySelectorAll('.lhl-card'));
+
+  const modal = document.getElementById('lhl-modal');
+  const modalVideo = document.getElementById('lhl-modalVideo');
+  const modalEyebrow = document.getElementById('lhl-modalEyebrow');
+  const modalTitle = document.getElementById('lhl-modalTitle');
+  const modalDesc = document.getElementById('lhl-modalDesc');
+  const modalCta = document.getElementById('lhl-modalCta');
+  const modalCtaLabel = document.getElementById('lhl-modalCtaLabel');
+
+  let carouselStarted = false;
+  let lastFocused = null;
+
+  function enterCarousel() {
+    welcome.classList.add('lhl-is-leaving');
+    carousel.hidden = false;
+    carousel.setAttribute('aria-hidden', 'false');
+
+    requestAnimationFrame(() => {
+      carousel.classList.add('lhl-is-visible');
+    });
+
+    if (!carouselStarted) {
+      carouselStarted = true;
+      loadCardVideos();
+    }
+
+    window.setTimeout(() => {
+      welcome.hidden = true;
+    }, 950);
+  }
+
+  enterBtn.addEventListener('click', enterCarousel);
+  enterBtn.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      enterCarousel();
+    }
+  });
+
+  function loadCardVideos() {
+    cards.forEach((card) => {
+      const room = card.dataset.room;
+      const video = card.querySelector('.lhl-card__video');
+      const src = VIDEOS[room];
+      if (!src) return;
+
+      video.addEventListener('loadeddata', () => video.classList.add('lhl-is-ready'), { once: true });
+      video.addEventListener('error', () => {
+        video.classList.remove('lhl-is-ready');
+      });
+
+      video.src = src;
+      video.play().catch(() => {});
+    });
+  }
+
+  const canHover = window.matchMedia('(hover: hover) and (min-width: 781px)');
+
+  function handlePointerMove(e) {
+    if (!canHover.matches) return;
+    const rect = stage.getBoundingClientRect();
+    const px = (e.clientX - rect.left) / rect.width - 0.5;
+    const py = (e.clientY - rect.top) / rect.height - 0.5;
+    horseshoe.style.transform = `rotateX(${py * -4}deg) rotateY(${px * 6}deg)`;
+  }
+
+  function resetPointer() {
+    horseshoe.style.transform = '';
+  }
+
+  stage.addEventListener('pointermove', handlePointerMove);
+  stage.addEventListener('pointerleave', resetPointer);
+
+  function openModal(roomKey) {
+    const room = ROOMS[roomKey];
+    if (!room) return;
+
+    lastFocused = document.activeElement;
+
+    modalEyebrow.textContent = room.eyebrow;
+    modalTitle.textContent = room.title;
+    modalDesc.textContent = room.description;
+    modalCtaLabel.textContent = room.cta;
+    modalCta.href = `#${roomKey}`;
+
+    modalVideo.pause();
+    modalVideo.removeAttribute('src');
+    modalVideo.src = VIDEOS[roomKey];
+    modalVideo.load();
+    modalVideo.play().catch(() => {});
+
+    modal.hidden = false;
+    document.body.style.overflow = 'hidden';
+    modal.querySelector('.lhl-modal__close').focus();
+  }
+
+  function closeModal() {
+    modal.hidden = true;
+    document.body.style.overflow = '';
+    modalVideo.pause();
+    if (lastFocused) lastFocused.focus();
+  }
+
+  cards.forEach((card) => {
+    card.addEventListener('click', () => openModal(card.dataset.room));
+  });
+
+  modal.addEventListener('click', (e) => {
+    if (e.target.closest('[data-lhl-close]')) closeModal();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !modal.hidden) closeModal();
+  });
+})();
+</script>
