@@ -3,9 +3,9 @@ v.5
 
 ## Homepage carousel
 
-A static, dependency-free homepage: a welcome screen ("Come on in. Let's get
-you ready.") that leads into an immersive 5-card horseshoe carousel for the
-five rooms — Resources, Community, Scripture, Tools, and Library.
+A static, dependency-free homepage: a welcome screen ("Start Here") that
+leads into an immersive 5-card horseshoe carousel for the five rooms —
+Resources, Community, Scripture, Tools, and Library.
 
 - `index.html` — markup for the welcome screen, carousel, and room modal
 - `css/style.css` — dark/gold glass styling and the 3D horseshoe layout
