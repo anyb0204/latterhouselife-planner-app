@@ -197,6 +197,7 @@
 .lhl-welcome__bgvideo {
   position: absolute;
   inset: 0;
+  z-index: 1;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -209,18 +210,21 @@
 .lhl-welcome__glow {
   position: absolute;
   inset: 0;
+  z-index: 0;
   background: linear-gradient(160deg, #10201e, var(--lhl-bg) 75%);
 }
 
 .lhl-welcome__scrim {
   position: absolute;
   inset: 0;
+  z-index: 2;
   background:
     linear-gradient(180deg, rgba(10,10,15,0.55) 0%, rgba(10,10,15,0.05) 22%, rgba(10,10,15,0.05) 70%, rgba(10,10,15,0.65) 100%);
 }
 
 .lhl-welcome__brand {
   position: absolute;
+  z-index: 3;
   right: 28px;
   bottom: 26px;
   z-index: 2;
@@ -236,7 +240,7 @@
   position: absolute;
   left: 28px;
   top: 26px;
-  z-index: 2;
+  z-index: 3;
   appearance: none;
   border: 1px solid var(--lhl-gold-soft);
   background: rgba(10, 10, 15, 0.32);
