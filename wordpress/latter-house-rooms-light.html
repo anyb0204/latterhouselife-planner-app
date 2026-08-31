@@ -1,0 +1,329 @@
+<!--
+  LATTER HOUSE LIFE — "Choose a room" section (light theme, video-forward)
+  =====================================================================
+  HOW TO INSTALL
+  1. In the WP block editor, add a "Custom HTML" block on the page you
+     want this section to appear on, then paste this ENTIRE file in.
+  2. This matches your site's real active design system (cream ground,
+     white/gold/sage, Cormorant Garamond + Manrope) — not the dark
+     version from earlier. Real video URLs from your Media Library are
+     already wired in below (no placeholders to fill in).
+  3. All classes/ids are prefixed "lhlr-" and scoped under #lhlr-root to
+     avoid clashing with your theme's CSS.
+  4. Each "room" is a large looping muted video panel (~82% of viewport
+     height) with a text overlay — click a room to open a panel with
+     the fuller description and a call-to-action.
+-->
+<div id="lhlr-root">
+
+  <header class="lhlr-topbar">
+    <a href="#" class="lhlr-topbar__back">&larr; Back</a>
+    <span class="lhlr-topbar__mark">Latter House Life</span>
+  </header>
+
+  <section class="lhlr-hero">
+    <div class="lhlr-eyebrow">Latter House Life</div>
+    <h1 class="lhlr-headline">Choose a room to step into</h1>
+    <p class="lhlr-lead">Five spaces, each holding what you need for the road ahead.</p>
+  </section>
+  <div class="lhlr-rule"></div>
+
+  <main>
+    <button type="button" class="lhlr-room" data-room="resources">
+      <video class="lhlr-room__video" muted loop playsinline preload="none"
+        data-src="https://latterhouselife.shop/wp-content/uploads/2026/08/R-crashing-waves.mp4"></video>
+      <span class="lhlr-room__glow lhlr-room__glow--resources"></span>
+      <span class="lhlr-room__scrim"></span>
+      <span class="lhlr-room__content">
+        <span class="lhlr-room__eyebrow">Life-giving. Abundant.</span>
+        <span class="lhlr-room__title">Resources</span>
+        <span class="lhlr-room__desc">Sermons, teachings, and practical resources that overflow.</span>
+        <span class="lhlr-room__cta">Explore Resources</span>
+      </span>
+    </button>
+
+    <button type="button" class="lhlr-room" data-room="community">
+      <video class="lhlr-room__video" muted loop playsinline preload="none"
+        data-src="https://latterhouselife.shop/wp-content/uploads/2026/07/C-group-of-old-men-talking.mp4"></video>
+      <span class="lhlr-room__glow lhlr-room__glow--community"></span>
+      <span class="lhlr-room__scrim"></span>
+      <span class="lhlr-room__content">
+        <span class="lhlr-room__eyebrow">Real people. Real conversations.</span>
+        <span class="lhlr-room__title">Community</span>
+        <span class="lhlr-room__desc">Honest conversation and people who'll walk with you.</span>
+        <span class="lhlr-room__cta">Join the Community</span>
+      </span>
+    </button>
+
+    <button type="button" class="lhlr-room" data-room="scripture">
+      <video class="lhlr-room__video" muted loop playsinline preload="none"
+        data-src="https://latterhouselife.shop/wp-content/uploads/2026/07/S-hands-on-bible.mp4"></video>
+      <span class="lhlr-room__glow lhlr-room__glow--scripture"></span>
+      <span class="lhlr-room__scrim"></span>
+      <span class="lhlr-room__content">
+        <span class="lhlr-room__eyebrow">Immerse in the Word.</span>
+        <span class="lhlr-room__title">Scripture</span>
+        <span class="lhlr-room__desc">Slow down, open the pages, and let it read you back.</span>
+        <span class="lhlr-room__cta">Open Scripture</span>
+      </span>
+    </button>
+
+    <button type="button" class="lhlr-room" data-room="tools">
+      <video class="lhlr-room__video" muted loop playsinline preload="none"
+        data-src="https://latterhouselife.shop/wp-content/uploads/2026/07/T-man-working-with-tools.mp4"></video>
+      <span class="lhlr-room__glow lhlr-room__glow--tools"></span>
+      <span class="lhlr-room__scrim"></span>
+      <span class="lhlr-room__content">
+        <span class="lhlr-room__eyebrow">Build what God called you to build.</span>
+        <span class="lhlr-room__title">Tools</span>
+        <span class="lhlr-room__desc">Practical tools for the calling you're carrying.</span>
+        <span class="lhlr-room__cta">Get the Tools</span>
+      </span>
+    </button>
+
+    <button type="button" class="lhlr-room" data-room="library">
+      <video class="lhlr-room__video" muted loop playsinline preload="none"
+        data-src="https://latterhouselife.shop/wp-content/uploads/2026/07/L-woman-sitting-in-front-of-book-shelf.mp4"></video>
+      <span class="lhlr-room__glow lhlr-room__glow--library"></span>
+      <span class="lhlr-room__scrim"></span>
+      <span class="lhlr-room__content">
+        <span class="lhlr-room__eyebrow">Wisdom for the road ahead.</span>
+        <span class="lhlr-room__title">Library</span>
+        <span class="lhlr-room__desc">Settle in among the shelves and gather what you'll need.</span>
+        <span class="lhlr-room__cta">Visit the Library</span>
+      </span>
+    </button>
+  </main>
+
+  <footer class="lhlr-footer">&copy; 2026 Amy Fuller &middot; Latter House Life</footer>
+
+  <div class="lhlr-modal" id="lhlrModal" hidden>
+    <div class="lhlr-modal__backdrop" data-lhlr-close></div>
+    <div class="lhlr-modal__panel" role="dialog" aria-modal="true" aria-labelledby="lhlrModalTitle">
+      <button type="button" class="lhlr-modal__close" data-lhlr-close aria-label="Close">&times;</button>
+      <div class="lhlr-modal__media">
+        <video id="lhlrModalVideo" class="lhlr-modal__video" muted loop playsinline autoplay></video>
+      </div>
+      <div class="lhlr-modal__body">
+        <p class="lhlr-modal__eyebrow" id="lhlrModalEyebrow"></p>
+        <h2 class="lhlr-modal__title" id="lhlrModalTitle"></h2>
+        <p class="lhlr-modal__desc" id="lhlrModalDesc"></p>
+        <a href="#" class="lhlr-modal__cta" id="lhlrModalCta"></a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+#lhlr-root {
+  --lhlr-bg: #F5F0E8;
+  --lhlr-surface: #FFFFFF;
+  --lhlr-ink: #2C3830;
+  --lhlr-ink-soft: #4A5C52;
+  --lhlr-accent: #C9A84C;
+  --lhlr-gold-dim: rgba(201,168,76,0.3);
+  --lhlr-champagne: #E8DCC8;
+  --lhlr-sage: #8FA89A;
+  --lhlr-sage-deep: #6B8C7A;
+  --lhlr-font-display: 'Cormorant Garamond', Georgia, serif;
+  --lhlr-font-body: 'Manrope', -apple-system, sans-serif;
+
+  position: relative;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  background: var(--lhlr-bg);
+  color: var(--lhlr-ink);
+  font-family: var(--lhlr-font-body);
+  overflow-x: hidden;
+}
+
+#lhlr-root *, #lhlr-root *::before, #lhlr-root *::after { box-sizing: border-box; }
+#lhlr-root button { font-family: inherit; border: none; background: none; padding: 0; cursor: pointer; text-align: inherit; }
+#lhlr-root a { text-decoration: none; }
+#lhlr-root [hidden] { display: none !important; }
+
+.lhlr-topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 20px 40px; border-bottom: 1px solid var(--lhlr-champagne);
+}
+.lhlr-topbar__back { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--lhlr-ink-soft); }
+.lhlr-topbar__mark { font-family: var(--lhlr-font-display); font-size: 20px; color: var(--lhlr-ink); }
+
+.lhlr-hero { text-align: center; padding: 80px 24px 56px; max-width: 720px; margin: 0 auto; }
+.lhlr-eyebrow { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--lhlr-accent); margin-bottom: 18px; }
+.lhlr-headline { font-family: var(--lhlr-font-display); font-weight: 400; font-size: 52px; line-height: 1.1; margin: 0 0 20px; color: var(--lhlr-ink); }
+.lhlr-lead { font-size: 17px; line-height: 1.7; color: var(--lhlr-ink-soft); margin: 0; }
+.lhlr-rule { width: 64px; height: 1px; background: var(--lhlr-gold-dim); margin: 0 auto; }
+
+.lhlr-room {
+  position: relative; display: flex; align-items: flex-end; justify-content: center;
+  width: 100%; height: 82vh; min-height: 560px; overflow: hidden;
+}
+.lhlr-room__video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 900ms ease; }
+.lhlr-room__video.lhlr-is-ready { opacity: 1; }
+.lhlr-room__glow { position: absolute; inset: 0; }
+.lhlr-room__glow--resources { background: linear-gradient(160deg,#dce8e2,#c7d8cf); }
+.lhlr-room__glow--community { background: linear-gradient(160deg,#e4ddd0,#d3c8b6); }
+.lhlr-room__glow--scripture { background: linear-gradient(160deg,#ece2cd,#ddcda8); }
+.lhlr-room__glow--tools     { background: linear-gradient(160deg,#e6ddd2,#d6c7b3); }
+.lhlr-room__glow--library   { background: linear-gradient(160deg,#dfe3da,#c9d0bf); }
+.lhlr-room__scrim { position: absolute; inset: 0; background: linear-gradient(0deg, rgba(44,56,48,0.6) 0%, rgba(44,56,48,0.08) 45%, rgba(44,56,48,0) 70%); }
+.lhlr-room__content { position: relative; z-index: 1; text-align: center; padding: 0 24px 56px; max-width: 560px; display: flex; flex-direction: column; align-items: center; }
+.lhlr-room__eyebrow { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: #EAD9A0; margin-bottom: 12px; }
+.lhlr-room__title { font-family: var(--lhlr-font-display); font-weight: 400; font-size: 42px; color: #FFFDF7; margin: 0 0 14px; }
+.lhlr-room__desc { font-size: 15px; line-height: 1.7; color: rgba(255,253,247,0.88); margin: 0 0 22px; }
+.lhlr-room__cta {
+  display: inline-block; padding: 12px 28px; background: var(--lhlr-sage-deep); color: #FFFDF7;
+  font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; border-radius: 4px;
+  transition: background 220ms;
+}
+.lhlr-room:hover .lhlr-room__cta { background: var(--lhlr-ink); }
+
+.lhlr-footer { text-align: center; padding: 56px 24px; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--lhlr-ink-soft); }
+
+.lhlr-modal { position: fixed; inset: 0; z-index: 999999; display: flex; align-items: center; justify-content: center; padding: 24px; }
+.lhlr-modal__backdrop { position: absolute; inset: 0; background: rgba(44,56,48,0.55); }
+.lhlr-modal__panel {
+  position: relative; z-index: 1; width: min(820px, 100%); max-height: min(680px, 88vh);
+  display: grid; grid-template-columns: 1.05fr 1fr; background: var(--lhlr-surface);
+  border: 1px solid var(--lhlr-champagne); border-radius: 10px; overflow: hidden;
+  box-shadow: 0 30px 60px -20px rgba(44,56,48,0.35);
+}
+.lhlr-modal__media { position: relative; min-height: 240px; background: var(--lhlr-champagne); }
+.lhlr-modal__video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.lhlr-modal__body { padding: 40px 36px; display: flex; flex-direction: column; justify-content: center; overflow-y: auto; }
+.lhlr-modal__eyebrow { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--lhlr-sage-deep); font-weight: 600; margin: 0 0 10px; }
+.lhlr-modal__title { font-family: var(--lhlr-font-display); font-size: 36px; color: var(--lhlr-ink); margin: 0 0 16px; }
+.lhlr-modal__desc { font-size: 15px; line-height: 1.75; color: var(--lhlr-ink-soft); margin: 0 0 28px; }
+.lhlr-modal__cta { align-self: flex-start; display: inline-flex; align-items: center; padding: 13px 26px; background: var(--lhlr-sage-deep); color: #FFFDF7; font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; border-radius: 4px; transition: background 220ms; }
+.lhlr-modal__cta:hover { background: var(--lhlr-ink); }
+.lhlr-modal__close {
+  position: absolute; top: 16px; right: 16px; z-index: 2; width: 36px; height: 36px; border-radius: 50%;
+  border: 1px solid var(--lhlr-champagne); background: var(--lhlr-surface); color: var(--lhlr-ink);
+  display: flex; align-items: center; justify-content: center; font-size: 20px; line-height: 1;
+}
+.lhlr-modal__close:hover { border-color: var(--lhlr-accent); color: var(--lhlr-accent); }
+
+@media (max-width: 860px) {
+  .lhlr-modal__panel { grid-template-columns: 1fr; }
+  .lhlr-modal__media { min-height: 180px; }
+  .lhlr-modal__body { padding: 28px 24px; }
+  .lhlr-modal__title { font-size: 28px; }
+}
+@media (max-width: 640px) {
+  .lhlr-headline { font-size: 36px; }
+  .lhlr-room__title { font-size: 32px; }
+  .lhlr-room { height: 74vh; min-height: 460px; }
+  .lhlr-topbar { padding: 16px 20px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lhlr-room__video, .lhlr-room__cta, .lhlr-modal__cta { transition: none; }
+}
+</style>
+
+<script>
+(() => {
+  'use strict';
+
+  const ROOMS = {
+    resources: {
+      eyebrow: 'Life-giving. Abundant.',
+      title: 'Resources',
+      video: 'https://latterhouselife.shop/wp-content/uploads/2026/08/R-crashing-waves.mp4',
+      description: "Life poured out, not measured in drops. Sermons, teachings, and practical resources that overflow — because you were never meant to run on empty.",
+      cta: 'Explore Resources'
+    },
+    community: {
+      eyebrow: 'Real people. Real conversations.',
+      title: 'Community',
+      video: 'https://latterhouselife.shop/wp-content/uploads/2026/07/C-group-of-old-men-talking.mp4',
+      description: "Pull up a chair. This is where real people wrestle with real life — no performing required, just honest conversation and people who'll walk with you.",
+      cta: 'Join the Community'
+    },
+    scripture: {
+      eyebrow: 'Immerse in the Word.',
+      title: 'Scripture',
+      video: 'https://latterhouselife.shop/wp-content/uploads/2026/07/S-hands-on-bible.mp4',
+      description: 'Come sit in the Word a while. Slow down, open the pages, and let it read you back — verse by verse, day by day.',
+      cta: 'Open Scripture'
+    },
+    tools: {
+      eyebrow: 'Build what God called you to build.',
+      title: 'Tools',
+      video: 'https://latterhouselife.shop/wp-content/uploads/2026/07/T-man-working-with-tools.mp4',
+      description: "Whatever God put in your hands, we've got what you need to build it. Practical tools for the calling you're carrying.",
+      cta: 'Get the Tools'
+    },
+    library: {
+      eyebrow: 'Wisdom for the road ahead.',
+      title: 'Library',
+      video: 'https://latterhouselife.shop/wp-content/uploads/2026/07/L-woman-sitting-in-front-of-book-shelf.mp4',
+      description: "Wisdom doesn't rush. Settle in among the shelves and gather what you'll need for the road still ahead.",
+      cta: 'Visit the Library'
+    }
+  };
+
+  const root = document.getElementById('lhlr-root');
+  const rooms = Array.from(root.querySelectorAll('.lhlr-room'));
+  const modal = document.getElementById('lhlrModal');
+  const modalVideo = document.getElementById('lhlrModalVideo');
+  const modalEyebrow = document.getElementById('lhlrModalEyebrow');
+  const modalTitle = document.getElementById('lhlrModalTitle');
+  const modalDesc = document.getElementById('lhlrModalDesc');
+  const modalCta = document.getElementById('lhlrModalCta');
+  let lastFocused = null;
+
+  rooms.forEach((room) => {
+    const video = room.querySelector('.lhlr-room__video');
+    const src = video.getAttribute('data-src');
+    if (!src) return;
+    video.addEventListener('loadeddata', () => video.classList.add('lhlr-is-ready'), { once: true });
+    video.src = src;
+    video.play().catch(() => {});
+  });
+
+  function openModal(key) {
+    const room = ROOMS[key];
+    if (!room) return;
+    lastFocused = document.activeElement;
+    modalEyebrow.textContent = room.eyebrow;
+    modalTitle.textContent = room.title;
+    modalDesc.textContent = room.description;
+    modalCta.textContent = room.cta;
+    modalCta.href = `#${key}`;
+    modalVideo.pause();
+    modalVideo.removeAttribute('src');
+    modalVideo.src = room.video;
+    modalVideo.load();
+    modalVideo.play().catch(() => {});
+    modal.hidden = false;
+    document.body.style.overflow = 'hidden';
+    modal.querySelector('.lhlr-modal__close').focus();
+  }
+
+  function closeModal() {
+    modal.hidden = true;
+    document.body.style.overflow = '';
+    modalVideo.pause();
+    if (lastFocused) lastFocused.focus();
+  }
+
+  rooms.forEach((room) => {
+    room.addEventListener('click', () => openModal(room.dataset.room));
+  });
+
+  modal.addEventListener('click', (e) => {
+    if (e.target.closest('[data-lhlr-close]')) closeModal();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !modal.hidden) closeModal();
+  });
+})();
+</script>
